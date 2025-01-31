@@ -1,6 +1,6 @@
 
 /*
- * *** PLACE YOUR NAME / SECTION  HERE ***
+ * *** Nicole Kozuch / Section 002 ***
  *
  * Homework # 1 (Programming Assignment). This Java class defines some basic
  * manipulation operations on Linked-Lists and Stacks.
@@ -51,9 +51,9 @@ public class HW1 {
          * linked list containing the value specific in teh parameter 'data'.
          * The newly inserted node will be inserted in sorted order within
          * the linked-list.
-         *
+         * 
          */
-        public void sortedInsert ( int data ) {
+        public void sortedInsert(int data) {
             Node new_node = new Node(data);
 
             new_node.next = null;
@@ -85,24 +85,46 @@ public class HW1 {
          * The method will invoke the method removeElements for each element
          * found in the linked-list that is less than thr parameter value passed.
          */
-        public void removeElementsLT ( int ltValue ) {
+        public void removeElementsLT(int ltValue) {
+            // Ensures the linked list isn't empty
+            if (this.head != null) {
+                Node current = this.head;
+                // Traverse through linked list
+                while (current != null) {
+                    // Removes all nodes less than given value by calling removeElement() method
+                    if (current.data < ltValue) {
+                        removeElement(current.data);
+                    }
+                    current = current.next;
+                }
+            }
 
-            // YOUR CODE GOES HERE
-
-            return;
         }
 
 
-        /*
+        /**
          * Method removeElement() - this method removes all nodes that contain a
          * value equal to the value the provided parameter 'value'.
          */
+        public void removeElement(int value) {
+            Node current = this.head;
+            Node prev = null;
 
-        public void removeElement ( int value ) {
-
-            // YOUR CODE GOES HERE
-
-            return;
+            // Traverse through an existing linked list
+            while (current != null) {
+                // Removes nodes containing the target value
+                if (current.data == value) {
+                    if (prev == null) {
+                        this.head = current.next;
+                    } else {
+                        prev.next = current.next;
+                    }
+                    current = current.next;
+                } else { // Continue traversal if no removal necessary
+                    prev = current;
+                    current = current.next;
+                }
+            }
         }
 
 
@@ -110,7 +132,7 @@ public class HW1 {
          * Method toString() - this is a helper method for printing / constructing
          * a string object from the linked-list.
          */
-        public String toString () // Method to output the LinkedList as a String
+        public String toString() // Method to output the LinkedList as a String
         {
             String output = "[";
             Node currNode = this.head;
@@ -122,7 +144,6 @@ public class HW1 {
         }
 
     } // End class LinkedList
-
 
 
 
@@ -156,12 +177,31 @@ public class HW1 {
          * The method should utilize the provided Stack class.
          */
         public static boolean isPalindrome(String input) {
-
+            // Assume any given string is a palindrome
+            boolean isPalindrome = true;
             Stack<Character> stack = new Stack<>();
             input = input.toLowerCase().replaceAll("\\s+", "");
 
-            // Your CODE GOES HERE
-            return false;
+            // Ensures the passed string is valid
+            if (input != null) {
+                // Pushes each character into the stack for later comparison
+                for (int i = 0; i < input.length(); i++) {
+                    stack.push(input.charAt(i));
+                }
+
+                int index = 0;
+                // Compares each character, continuing if both characters match at current index
+                while (index < input.length() && isPalindrome) {
+                    char currentChar = stack.pop();
+                    // Breaks once two characters do not match, thus not being a palindrome
+                    if(currentChar != input.charAt(index)) {
+                        isPalindrome = false;
+                    }
+                    index++;
+                }
+            }
+
+            return isPalindrome;
         }
 
 
@@ -181,11 +221,30 @@ public class HW1 {
          * completed, place them all back in teh original stack.
          */
         public static int findLargestK(Stack<Integer> stack, int k) {
+            Stack<Integer> tempStack = new Stack<>();
+            int largestIndex = -1;
+            int currentIndex = stack.size() - 1;
 
-            // YOUR CODE GOES HERE
-            return -1;
+            // Iterate through the stack, beginning from the top
+            while (!stack.isEmpty()) {
+                int currentElement = stack.pop();
+                // Checks for given value 'k' in stack
+                if (currentElement == k && currentIndex > largestIndex) {
+                    // Reassigns the index to be the new largest index
+                    largestIndex = currentIndex;
+                }
+                // Places elements in temporary stack for later restoration
+                tempStack.push(currentElement);
+                currentIndex--;
+            }
+
+            // Restores the stack to its original order
+            while(!tempStack.isEmpty()) {
+                stack.push(tempStack.pop());
+            }
+
+            return largestIndex;
         }
-
     }  // End class Stacks
 
 
@@ -219,7 +278,7 @@ public class HW1 {
         */
 
         // RETURN THE CORRECT OPTION NUMBER LISTED ABOVE
-        return -1;
+        return 3;
     }
 
 
@@ -240,8 +299,7 @@ public class HW1 {
          */
 
         // RETURN THE CORRECT OPTION LISTED ABOVE
-        return -1;
+        return 2;
     }
-
 }
 
